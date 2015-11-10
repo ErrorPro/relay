@@ -67,7 +67,7 @@ class RelayDefaultNetworkLayer {
   }
 
   sendQueries(requests: Array<RelayQueryRequest>): Promise {
-    return Promise.all(requests.map(request => (
+    return Promise.all(requests.map(request => {
       this._sendQuery(request).then(
         result => result.json()
       ).then(payload => {
@@ -90,7 +90,8 @@ class RelayDefaultNetworkLayer {
       }).catch(
         error => request.reject(error)
       )
-    )));
+      return request
+    }));
   }
 
   supports(...options: Array<string>): boolean {
